@@ -267,6 +267,7 @@ func Provider() terraform.ResourceProvider {
 			"checkpoint_management_nat_rulebase":                              dataSourceManagementNatRuleBase(),
 			"checkpoint_management_threat_rulebase":                           dataSourceManagementThreatRuleBase(),
 			"checkpoint_management_https_rulebase":                            dataSourceManagementHttpsRuleBase(),
+			"checkpoint_management_cme_version":                               dataSourceManagementCMEVersion(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
