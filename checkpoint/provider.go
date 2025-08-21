@@ -510,6 +510,7 @@ func Provider() terraform.ResourceProvider {
 			"checkpoint_management_cme_gw_configurations_aws":                 dataSourceManagementCMEGWConfigurationsAWS(),
 			"checkpoint_management_cme_gw_configurations_azure":               dataSourceManagementCMEGWConfigurationsAzure(),
 			"checkpoint_management_cme_gw_configurations_gcp":                 dataSourceManagementCMEGWConfigurationsGCP(),
+			"checkpoint_management_cme_azure_vwan_inbound_rules":          	   dataSourceManagementCMEAzureVwanInboundRules(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
