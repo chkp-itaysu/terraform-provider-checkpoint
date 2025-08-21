@@ -1,13 +1,17 @@
 package checkpoint
 
 import (
+	"fmt"
+	checkpoint "github.com/CheckPointSW/cp-mgmt-api-go-sdk/APIFiles"
 	"math"
 	"strconv"
+	"time"
 )
 
 const (
-	CmeApiVersion = "v1.3.1"
-	CmeApiPath    = "cme-api/" + CmeApiVersion
+	CmeApiVersion  = "v1.3.1"
+	CmeApiBasePath = "cme-api"
+	CmeApiPath     = CmeApiBasePath + "/" + CmeApiVersion
 )
 
 func checkIfRequestFailed(resJson map[string]interface{}) bool {
@@ -55,4 +59,30 @@ func cmeObjectNotFound(resJson map[string]interface{}) bool {
 		}
 	}
 	return false
+}
+
+func cmeWaitForReuqest(client *checkpoint.ApiClient, requestId string) error {
+	url := CmeApiBasePath + "/status/" + requestId
+
+	for res, err := client.ApiCall(url, nil, client.GetSessionID(), true, client.IsProxyUsed(), "GET"); err != nil; {
+		if err != nil {
+			return fmt.Errorf(err.Error())
+		}
+
+		data := res.GetData()
+		if checkIfRequestFailed(data) {
+			return fmt.Errorf(buildErrorMessage(data))
+		}
+
+		requestStatus := data["result"].(map[string]interface{})["requestStatus"].(string)
+		if requestStatus == "Success" {
+			return nil
+		} else if requestStatus != "InProgress" {
+			return fmt.Errorf(err.Error())
+		}
+
+		time.Sleep(10 * time.Second)
+	}
+
+	return fmt.Errorf("Could not get request status for request ID: %s", requestId)
 }
