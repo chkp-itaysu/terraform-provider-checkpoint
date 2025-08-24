@@ -104,11 +104,13 @@ func dataSourceManagementCMEAzureVwanInboundRulesRead(d *schema.ResourceData, m 
 		return fmt.Errorf(errMessage)
 	}
 
-	d.SetId("cme-azure-vwan-inbound-rules-" + accountID + "-" + nvaResourceGroup + "-" + nvaName + "-" + acctest.RandString(10))
+	if v, ok := d.GetOk("id"); !ok || v.(string) == "" {
+		d.SetId("cme-azure-vwan-inbound-rules-" + accountID + "-" + nvaResourceGroup + "-" + nvaName + "-" + acctest.RandString(10))
+	}
 
 	rulesList := inboundRules["result"].(map[string]interface{})["rules"].([]interface{})
 	var rulesListToReturn []map[string]interface{}
-	
+
 	for i := range rulesList {
 		rulesListToReturn = append(rulesListToReturn, rulesList[i].(map[string]interface{}))
 	}
