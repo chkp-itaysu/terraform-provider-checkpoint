@@ -8,12 +8,12 @@ import (
 	"log"
 )
 
-func resourceManagementCMEAzureVwanInboundRule() *schema.Resource {
+func resourceManagementCMEAzureVwanInboundRules() *schema.Resource {
 	return &schema.Resource{
-		Create: createManagementCMEAzureVwanInboundRule,
-		Update: createManagementCMEAzureVwanInboundRule,
+		Create: createManagementCMEAzureVwanInboundRules,
+		Update: createManagementCMEAzureVwanInboundRules,
 		Read:   dataSourceManagementCMEAzureVwanInboundRulesRead,
-		Delete: deleteManagementCMEAzureVwanInboundRule,
+		Delete: deleteManagementCMEAzureVwanInboundRules,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
@@ -33,42 +33,51 @@ func resourceManagementCMEAzureVwanInboundRule() *schema.Resource {
 				Required:    true,
 				Description: "The name of the NVA.",
 			},
-			"name": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "The rule name.",
-			},
-			"lb_public_ips": {
+			"rules": {
 				Type:        schema.TypeList,
 				Required:    true,
-				Description: "A list of outbound public IPs for that rule.",
-				Elem: &schema.Schema{
-					Type: schema.TypeString,
+				Description: "A list of inbound rules of the NVA.",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The rule name.",
+						},
+						"lb_public_ips": {
+							Type:        schema.TypeList,
+							Required:    true,
+							Description: "A list of outbound public IPs for that rule.",
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+						"original_ports": {
+							Type:        schema.TypeList,
+							Required:    true,
+							Description: "The list of ports allowed in that rule.",
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+						"original_source": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The rule inbound IP address.",
+						},
+						"protocol": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The traffic protocol in that rule.",
+						},
+					},
 				},
-			},
-			"original_ports": {
-				Type:        schema.TypeList,
-				Required:    true,
-				Description: "The list of ports allowed in that rule.",
-				Elem: &schema.Schema{
-					Type: schema.TypeString,
-				},
-			},
-			"original_source": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "The rule inbound IP address.",
-			},
-			"protocol": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "The traffic protocol in that rule.",
 			},
 		},
 	}
 }
 
-func deleteManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface{}) error {
+func deleteManagementCMEAzureVwanInboundRules(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
 	
 	var accountID string
@@ -113,7 +122,7 @@ func deleteManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface
 	return nil
 }
 
-func createManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface{}) error {
+func createManagementCMEAzureVwanInboundRules(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
 	
 	var accountID string
@@ -131,29 +140,24 @@ func createManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface
 	}
 
 	payload := make(map[string]interface{}, 0)
-	ruleMap := make(map[string]interface{}, 0)
 
-	if v, ok := d.GetOk("name"); ok {
-		ruleMap["name"] = v.(string)
+	if v, ok := d.GetOk("rules"); ok {
+		rules := v.([]interface{})
+		rulesList := make([]map[string]interface{}, 0, len(rules))
+		for _, rule := range rules {
+			ruleMap := rule.(map[string]interface{})
+			rulePayload := make(map[string]interface{})
+			rulePayload["name"] = ruleMap["name"].(string)
+			rulePayload["lb_public_ips"] = ruleMap["lb_public_ips"].([]interface{})
+			rulePayload["original_ports"] = ruleMap["original_ports"].([]interface{})
+			rulePayload["original_source"] = ruleMap["original_source"].(string)
+			rulePayload["protocol"] = ruleMap["protocol"].(string)
+			rulesList = append(rulesList, rulePayload)
+		}
+		payload["rules"] = rulesList
+	} else {
+		return fmt.Errorf("rules must be provided")
 	}
-
-	if v, ok := d.GetOk("lb_public_ips"); ok {
-		ruleMap["lb_public_ips"] = v.([]interface{})
-	}
-
-	if v, ok := d.GetOk("original_ports"); ok {
-		ruleMap["original_ports"] = v.([]interface{})
-	}
-
-	if v, ok := d.GetOk("original_source"); ok {
-		ruleMap["original_source"] = v.(string)
-	}
-
-	if v, ok := d.GetOk("protocol"); ok {
-		ruleMap["protocol"] = v.(string)
-	}
-
-	payload["rules"] = []map[string]interface{}{ruleMap}
 
 	log.Println("Create cme Azure VWAN inbound rules - NVA = ", nvaName)
 
@@ -178,7 +182,7 @@ func createManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface
 		return requestErr
 	}
 
-	d.SetId("cme-azure-vwan-inbound-rules-" + ruleMap["name"].(string) + acctest.RandString(10))
+	d.SetId("cme-azure-vwan-inbound-rules-" + accountID + "-" + nvaResourceGroup + "-" + nvaName + "-" + acctest.RandString(10))
 
 	return dataSourceManagementCMEAzureVwanInboundRulesRead(d, m)
 }
