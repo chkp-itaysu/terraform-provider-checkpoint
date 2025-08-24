@@ -177,8 +177,6 @@ func createManagementCMEAzureVwanInboundRules(d *schema.ResourceData, m interfac
 
 	requestId := inboundRules["result"].(map[string]interface{})["request-id"].(string)
 
-	log.Println("Request ID: ", requestId)
-
 	requestErr := cmeWaitForReuqest(client, requestId)
 	if requestErr != nil {
 		return requestErr
