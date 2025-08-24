@@ -6,6 +6,7 @@ import (
 	"math"
 	"strconv"
 	"time"
+	"log"
 )
 
 const (
@@ -62,26 +63,30 @@ func cmeObjectNotFound(resJson map[string]interface{}) bool {
 }
 
 func cmeWaitForReuqest(client *checkpoint.ApiClient, requestId string) error {
+	var res checkpoint.APIResponse
+	var err error
+
+	log.Println("Waiting for request ID: ", requestId)
 	url := CmeApiBasePath + "/status/" + requestId
 
-	for res, err := client.ApiCall(url, nil, client.GetSessionID(), true, client.IsProxyUsed(), "GET"); err != nil; {
-		if err != nil {
-			return fmt.Errorf(err.Error())
-		}
+	res, err = client.ApiCall(url, nil, client.GetSessionID(), true, client.IsProxyUsed(), "GET")
 
+	for err == nil {
 		data := res.GetData()
 		if checkIfRequestFailed(data) {
 			return fmt.Errorf(buildErrorMessage(data))
 		}
 
 		requestStatus := data["result"].(map[string]interface{})["requestStatus"].(string)
+		log.Println("Request status: ", requestStatus)
 		if requestStatus == "Success" {
 			return nil
 		} else if requestStatus != "InProgress" {
-			return fmt.Errorf(err.Error())
+			return fmt.Errorf("Could not complete request. Request status: %s", requestStatus)
 		}
 
 		time.Sleep(10 * time.Second)
+		res, err = client.ApiCall(url, nil, client.GetSessionID(), true, client.IsProxyUsed(), "GET")
 	}
 
 	return fmt.Errorf("Could not get request status for request ID: %s", requestId)
