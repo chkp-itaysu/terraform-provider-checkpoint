@@ -89,7 +89,7 @@ func dataSourceManagementCMEAzureVwanInboundRulesRead(d *schema.ResourceData, m 
 	}
 
 	log.Println("Read cme Azure VWAN inbound rules - NVA = ", nvaName)
-	
+
 	url := CmeApiPath + "/azure/virtualWANs/accounts/" + accountID + "/resourceGroups/" + nvaResourceGroup + "/inboundRules/" + nvaName
 
 	AzureVwanInboundRulesRes, err := client.ApiCall(url, nil, client.GetSessionID(), true, client.IsProxyUsed(), "GET")
@@ -108,14 +108,11 @@ func dataSourceManagementCMEAzureVwanInboundRulesRead(d *schema.ResourceData, m 
 
 	rulesList := inboundRules["result"].(map[string]interface{})["rules"].([]interface{})
 	var rulesListToReturn []map[string]interface{}
-	if len(rulesList) > 0 {
-		for i := range rulesList {
-			rulesListToReturn = append(rulesListToReturn, rulesList[i].(map[string]interface{}))
-		}
-		_ = d.Set("rules", rulesListToReturn)
-	} else {
-		_ = d.Set("rules", []interface{}{})
+	
+	for i := range rulesList {
+		rulesListToReturn = append(rulesListToReturn, rulesList[i].(map[string]interface{}))
 	}
+	_ = d.Set("rules", rulesListToReturn)
 
 	log.Println("Inbound Rules: ", d.Get("rules"))
 
