@@ -117,9 +117,9 @@ func deleteManagementCMEAzureVwanInboundRules(d *schema.ResourceData, m interfac
 		return requestErr
 	}
 
-	d.SetId("cme-azure-vwan-inbound-rules-" + accountID + "-" + nvaResourceGroup + "-" + nvaName + "-" + acctest.RandString(10))
+	d.SetId("")
 
-	return dataSourceManagementCMEAzureVwanInboundRulesRead(d, m)
+	return nil
 }
 
 func createManagementCMEAzureVwanInboundRules(d *schema.ResourceData, m interface{}) error {
