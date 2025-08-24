@@ -77,12 +77,14 @@ func cmeWaitForReuqest(client *checkpoint.ApiClient, requestId string) error {
 			return fmt.Errorf(buildErrorMessage(data))
 		}
 
-		requestStatus := data["result"].(map[string]interface{})["requestStatus"].(string)
+		result := data["result"].(map[string]interface{})
+
+		requestStatus := result["requestStatus"].(string)
 		log.Println("Request status: ", requestStatus)
 		if requestStatus == "Success" {
 			return nil
 		} else if requestStatus == "Failure" {
-			return fmt.Errorf(buildErrorMessage(data))
+			return fmt.Errorf(buildErrorMessage(result))
 		} else if requestStatus != "InProgress" {
 			return fmt.Errorf("Could not complete request. Request status: %s", requestStatus)
 		}
