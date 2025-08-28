@@ -73,7 +73,7 @@ func dataSourceManagementCMEAzureVwanInboundRules() *schema.Resource {
 
 func dataSourceManagementCMEAzureVwanInboundRulesRead(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
-	
+
 	var accountID string
 	var nvaResourceGroup string
 	var nvaName string
@@ -118,5 +118,5 @@ func dataSourceManagementCMEAzureVwanInboundRulesRead(d *schema.ResourceData, m 
 
 	log.Println("Inbound Rules: ", d.Get("rules"))
 
-	return nil;
+	return nil
 }
