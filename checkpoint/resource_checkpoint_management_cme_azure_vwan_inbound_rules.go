@@ -70,7 +70,7 @@ func resourceManagementCMEAzureVwanInboundRule() *schema.Resource {
 
 func deleteManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
-	
+
 	var accountID string
 	var nvaResourceGroup string
 	var nvaName string
@@ -115,7 +115,7 @@ func deleteManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface
 
 func createManagementCMEAzureVwanInboundRule(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
-	
+
 	var accountID string
 	var nvaResourceGroup string
 	var nvaName string
