@@ -2,12 +2,12 @@
 layout: "checkpoint"
 page_title: "checkpoint_management_cme_azure_vwan_provision"
 sidebar_current: "docs-checkpoint-resource-checkpoint-management-cme-azure-vwan-provision"
-description: |- This resource allows you to add/update/delete Check Point CME AWS Account.
+description: |- This resource allows you to provision Azure VWAN NVA.
 ---
 
 # Resource: checkpoint_management_cme_azure_vwan_provision
 
-This resource allows you to provision CME Azure VWAN NVA.
+This resource allows you to provision Azure VWAN NVA.
 
 For details about the compatibility between the Terraform Release version and the CME API version, please refer to the section [Compatibility with CME](https://registry.terraform.io/providers/CheckPointSW/checkpoint/latest/docs#compatibility-with-cme).
 
