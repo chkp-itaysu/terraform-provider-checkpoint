@@ -27,9 +27,7 @@ resource "checkpoint_management_cme_azure_vwan_provision" "provision" {
 ```
 
 ## Argument Reference
-
 These arguments are supported:
-
 * `account_id` - (Required) The ID of the Azure account.
 * `nva_resource_group` - (Required) The name of the resource group that contains the NVA.
 * `nva_name` - (Required) The name of the NVA.

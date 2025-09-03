@@ -2,12 +2,12 @@
 layout: "checkpoint"
 page_title: "checkpoint_management_cme_azure_vwan_inbound_rules"
 sidebar_current: "docs-checkpoint-data-source-checkpoint-management-cme-azure-vwan-inbound-rules"
-description: |- Use this data source to get information on all Check Point CME Azure VWAN Inbound Rules.
+description: |- Use this data source to get information on all Check Point Azure VWAN NVA Inbound Rules.
 ---
 
 # Data Source: checkpoint_management_cme_azure_vwan_inbound_rules
 
-Use this data source to get information on all Check Point CME Azure VWAN Inbound Rules.
+Use this data source to get information on all Check Point Azure VWAN NVA Inbound Rules.
 
 For details about the compatibility between the Terraform Release version and the CME API version, please refer to the section [Compatibility with CME](https://registry.terraform.io/providers/CheckPointSW/checkpoint/latest/docs#compatibility-with-cme).
 
@@ -23,9 +23,7 @@ data "checkpoint_management_cme_azure_vwan_inbound_rules" "incound_rules" {
 ```
 
 ## Argument Reference
-
 These arguments are supported:
-
 * `account_id` - (Required) The ID of the Azure account.
 * `nva_resource_group` - (Required) The name of the resource group that contains the NVA.
 * `nva_name` - (Required) The name of the NVA.
