@@ -2,11 +2,12 @@ package checkpoint
 
 import (
 	"fmt"
-	checkpoint "github.com/CheckPointSW/cp-mgmt-api-go-sdk/APIFiles"
+	"log"
 	"math"
 	"strconv"
 	"time"
-	"log"
+
+	checkpoint "github.com/CheckPointSW/cp-mgmt-api-go-sdk/APIFiles"
 )
 
 const (
@@ -74,7 +75,7 @@ func cmeWaitForReuqest(client *checkpoint.ApiClient, requestId string) error {
 	for err == nil {
 		data := res.GetData()
 		if checkIfRequestFailed(data) {
-			return fmt.Errorf(buildErrorMessage(data))
+			return fmt.Errorf("%s", buildErrorMessage(data))
 		}
 
 		result := data["result"].(map[string]interface{})
@@ -84,7 +85,7 @@ func cmeWaitForReuqest(client *checkpoint.ApiClient, requestId string) error {
 		if requestStatus == "Success" {
 			return nil
 		} else if requestStatus == "Failure" {
-			return fmt.Errorf(buildErrorMessage(result))
+			return fmt.Errorf("%s", buildErrorMessage(result))
 		} else if requestStatus != "InProgress" {
 			return fmt.Errorf("Could not complete request. Request status: %s", requestStatus)
 		}

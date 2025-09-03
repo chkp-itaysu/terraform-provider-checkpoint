@@ -2,12 +2,13 @@ package checkpoint
 
 import (
 	"fmt"
-	checkpoint "github.com/CheckPointSW/cp-mgmt-api-go-sdk/APIFiles"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	"log"
 	"strings"
 	"time"
+
+	checkpoint "github.com/CheckPointSW/cp-mgmt-api-go-sdk/APIFiles"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
 
 func Provider() terraform.ResourceProvider {
@@ -335,7 +336,7 @@ func Provider() terraform.ResourceProvider {
 			"checkpoint_management_cme_gw_configurations_azure":                    resourceManagementCMEGWConfigurationsAzure(),
 			"checkpoint_management_cme_gw_configurations_gcp":                      resourceManagementCMEGWConfigurationsGCP(),
 			"checkpoint_generic_api":                                               resourceManagementGenericApi(),
-			"checkpoint_management_cme_azure_vwan_inbound_rule":                    resourceManagementCMEAzureVwanInboundRule(),
+			"checkpoint_management_cme_azure_vwan_inbound_rules":                   resourceManagementCMEAzureVwanInboundRules(),
 			"checkpoint_management_cme_azure_vwan_provision":                       resourceManagementCMEAzureVwanProvision(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
@@ -512,7 +513,7 @@ func Provider() terraform.ResourceProvider {
 			"checkpoint_management_cme_gw_configurations_aws":                 dataSourceManagementCMEGWConfigurationsAWS(),
 			"checkpoint_management_cme_gw_configurations_azure":               dataSourceManagementCMEGWConfigurationsAzure(),
 			"checkpoint_management_cme_gw_configurations_gcp":                 dataSourceManagementCMEGWConfigurationsGCP(),
-			"checkpoint_management_cme_azure_vwan_inbound_rules":          	   dataSourceManagementCMEAzureVwanInboundRules(),
+			"checkpoint_management_cme_azure_vwan_inbound_rules":              dataSourceManagementCMEAzureVwanInboundRules(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
