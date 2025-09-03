@@ -59,7 +59,7 @@ func resourceManagementCMEAzureVwanProvision() *schema.Resource {
 
 func createManagementCMEAzureVwanProvision(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
-	
+
 	var accountID string
 	var nvaResourceGroup string
 	var nvaName string
@@ -122,7 +122,7 @@ func createManagementCMEAzureVwanProvision(d *schema.ResourceData, m interface{}
 
 func updateManagementCMEAzureVwanProvision(d *schema.ResourceData, m interface{}) error {
 	client := m.(*checkpoint.ApiClient)
-	
+
 	var accountID string
 	var nvaResourceGroup string
 	var nvaName string
@@ -147,7 +147,7 @@ func updateManagementCMEAzureVwanProvision(d *schema.ResourceData, m interface{}
 		payload["policy"] = d.Get("policy").(string)
 	}
 
-	if d.HasChange("autonomous_threat_prevention"){
+	if d.HasChange("autonomous_threat_prevention") {
 		payload["autonomous_threat_prevention"] = d.Get("autonomous_threat_prevention").(bool)
 	}
 
