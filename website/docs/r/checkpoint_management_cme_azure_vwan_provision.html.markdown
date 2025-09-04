@@ -2,7 +2,8 @@
 layout: "checkpoint"
 page_title: "checkpoint_management_cme_azure_vwan_provision"
 sidebar_current: "docs-checkpoint-resource-checkpoint-management-cme-azure-vwan-provision"
-description: |- This resource allows you to provision Azure VWAN NVA.
+description: |-
+  This resource allows you to provision Azure VWAN NVA.
 ---
 
 # Resource: checkpoint_management_cme_azure_vwan_provision

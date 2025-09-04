@@ -2,7 +2,8 @@
 layout: "checkpoint"
 page_title: "checkpoint_management_cme_azure_vwan_inbound_rules"
 sidebar_current: "docs-checkpoint-data-source-checkpoint-management-cme-azure-vwan-inbound-rules"
-description: |- Use this data source to get information on all Check Point Azure VWAN NVA Inbound Rules.
+description: |-
+  Use this data source to get information on all Check Point Azure VWAN NVA Inbound Rules.
 ---
 
 # Data Source: checkpoint_management_cme_azure_vwan_inbound_rules

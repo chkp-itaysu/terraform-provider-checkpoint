@@ -2,7 +2,8 @@
 layout: "checkpoint"
 page_title: "checkpoint_management_cme_azure_vwan_inbound_rules"
 sidebar_current: "docs-checkpoint-resource-checkpoint-management-cme-azure-vwan-inbound-rules"
-description: |- This resource allows you to provision Azure VWAN NVA.
+description: |-
+  This resource allows you to provision Azure VWAN NVA.
 ---
 
 # Resource: checkpoint_management_cme_azure_vwan_inbound_rules
@@ -16,10 +17,10 @@ For details about the compatibility between the Terraform Release version and th
 
 ```hcl
 resource "checkpoint_management_cme_azure_vwan_inbound_rules" "rules" {
-  account_id                   = "azureAccount"
-  nva_resource_group           = "nva_resource_group"
-  nva_name                     = "nva_name"
-  rules                        = "[{rule}, {rule}]"
+  account_id         = "azureAccount"
+  nva_resource_group = "nva_resource_group"
+  nva_name           = "nva_name"
+  rules              = "[{\"name\": \"exmaple\", \"original_source\": \"0.0.0.0/0\", \"lb_public_ips\": [\"123.123.123.123\"], \"original_ports\": [\"80\"], \"protocol\": \"TCP\"}]"
 }
 ```
 
